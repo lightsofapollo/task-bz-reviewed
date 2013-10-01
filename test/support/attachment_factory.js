@@ -35,7 +35,13 @@ function attachmentFlag(overrides) {
 function attachment(overrides) {
   var base = { description: 'GitHub' };
   if (overrides) {
-    for (var key in overrides) base[key] = overrides[key];
+    for (var key in overrides) {
+      if (key === 'flags') {
+        base[key] = overrides[key].map(attachmentFlag);
+        continue;
+      }
+      base[key] = overrides[key];
+    }
   }
 
   return base;

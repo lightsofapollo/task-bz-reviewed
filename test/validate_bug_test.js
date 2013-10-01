@@ -2,13 +2,13 @@ suite('validate bug', function() {
   var attachmentFactory = require('./support/attachment_factory'),
       reviewerFactory = require('./support/reviewer_factory'),
       subject = require('../lib/validate_bug').validateBug,
-      STATES = require('../lib/states');
+      states = require('../lib/states');
 
   var reviewers = reviewerFactory([
     { email: 'authorized@email.com' }
   ]);
 
-  suite('success - single suggested reviewer', function() {
+  test('success - single suggested reviewer', function() {
     var attachments = attachmentFactory([
       {
         flags: [
@@ -17,39 +17,38 @@ suite('validate bug', function() {
       }
     ]);
 
-    test('result', function() {
-      assert.deepEqual(
-        { success: true },
-        subject(reviewers, attachments)
-      );
-    });
+    assert.deepEqual(
+      { success: true },
+      subject(reviewers, attachments)
+    );
   });
 
   test('fail - no attachment', function() {
     assert.deepEqual(
-      {
-        success: false,
-        state: STATES.NO_ATTACHMENT.state,
-        message: STATES.NO_ATTACHMENT.message
-      },
+      states('NO_ATTACHMENT'),
       subject(reviewers, [])
     );
   });
 
-  suite('fail - no flags', function() {
+  test('fail - no flags', function() {
     var attachments = attachmentFactory([{
       flags: []
     }]);
 
-    test('result', function() {
-      assert.deepEqual(
-        {
-          success: false,
-          state: STATES.NO_FLAGS.state,
-          message: STATES.NO_FLAGS.message
-        },
-        subject(reviewers, attachments)
-      );
-    });
+    assert.deepEqual(
+      states('NO_FLAGS'),
+      subject(reviewers, attachments)
+    );
+  });
+
+  test('fail - no review flags', function() {
+    var attachments = attachmentFactory([{
+      flags: [{ name: 'feedback', setter: 'a', status: '+' }]
+    }]);
+
+    assert.deepEqual(
+      states('NO_REVIEW_FLAGS'),
+      subject(reviewers, attachments)
+    );
   });
 });
