@@ -1,0 +1,26 @@
+{
+  "name": "task-bz-reviewed",
+  "version": "0.0.0",
+  "description": "task-bz-reviewed ================",
+  "main": "index.js",
+  "scripts": {
+    "test": "make"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mozilla-b2g-bot/task-bz-reviewed.git"
+  },
+  "author": "James Lal[:lightsofapollo]",
+  "license": "Apache2",
+  "bugs": {
+    "url": "https://github.com/mozilla-b2g-bot/task-bz-reviewed/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.13.0",
+    "sinon": "~1.7.3"
+  },
+  "dependencies": {
+    "debug": "~0.7.2",
+    "bz": "~0.3.0"
+  }
+}
