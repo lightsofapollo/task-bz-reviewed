@@ -35,4 +35,21 @@ suite('validate bug', function() {
       subject(reviewers, [])
     );
   });
+
+  suite('fail - no flags', function() {
+    var attachments = attachmentFactory([{
+      flags: []
+    }]);
+
+    test('result', function() {
+      assert.deepEqual(
+        {
+          success: false,
+          state: STATES.NO_FLAGS.state,
+          message: STATES.NO_FLAGS.message
+        },
+        subject(reviewers, attachments)
+      );
+    });
+  });
 });
