@@ -4,15 +4,17 @@ suite('validate bug', function() {
       subject = require('../lib/validate_bug').validateBug,
       states = require('../lib/states');
 
+  var AUTHORIZED_EMAIL = 'authorized@email.com';
+
   var reviewers = reviewerFactory([
-    { email: 'authorized@email.com' }
+    { email: AUTHORIZED_EMAIL }
   ]);
 
   test('success - single suggested reviewer', function() {
     var attachments = attachmentFactory([
       {
         flags: [
-          { setter: 'authorized@email.com', status: '+' }
+          { setter: AUTHORIZED_EMAIL, status: '+' }
         ]
       }
     ]);
@@ -61,6 +63,20 @@ suite('validate bug', function() {
 
     assert.deepEqual(
       states('NO_SUGGESTED_REVIEWER'),
+      subject(reviewers, attachments)
+    );
+  });
+
+  test('fail - multiple reviewers suggested r+ other r-', function() {
+    var attachments = attachmentFactory([{
+      flags: [
+        { setter: AUTHORIZED_EMAIL, status: '+' },
+        { setter: 'notsuggested@email.com', status: '-' }
+      ]
+    }]);
+
+    assert.deepEqual(
+      states('REVIEW_NOT_GRANTED'),
       subject(reviewers, attachments)
     );
   });
