@@ -80,4 +80,18 @@ suite('validate bug', function() {
       subject(reviewers, attachments)
     );
   });
+
+  test('fail - multiple reviewers suggested r- other r+', function() {
+    var attachments = attachmentFactory([{
+      flags: [
+        { setter: AUTHORIZED_EMAIL, status: '-' },
+        { setter: 'notsuggested@email.com', status: '+' }
+      ]
+    }]);
+
+    assert.deepEqual(
+      states('REVIEW_NOT_GRANTED'),
+      subject(reviewers, attachments)
+    );
+  });
 });
