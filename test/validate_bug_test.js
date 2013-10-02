@@ -94,4 +94,18 @@ suite('validate bug', function() {
       subject(reviewers, attachments)
     );
   });
+
+  test('success - multiple r+', function() {
+    var attachments = attachmentFactory([{
+      flags: [
+        { setter: AUTHORIZED_EMAIL, status: '+' },
+        { setter: 'notsuggested@email.com', status: '+' }
+      ]
+    }]);
+
+    assert.deepEqual(
+      { success: true },
+      subject(reviewers, attachments)
+    );
+  });
 });
