@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "debug": "~0.7.2",
-    "bz": "~0.3.0"
+    "bz": "~1.0.0-alpha"
   }
 }
