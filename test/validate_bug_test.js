@@ -51,4 +51,17 @@ suite('validate bug', function() {
       subject(reviewers, attachments)
     );
   });
+
+  test('fail - no suggested reviwer', function() {
+    var attachments = attachmentFactory([{
+      flags: [
+        { setter: 'notsuggested@email.com', status: '+' }
+      ]
+    }]);
+
+    assert.deepEqual(
+      states('NO_SUGGESTED_REVIEWER'),
+      subject(reviewers, attachments)
+    );
+  });
 });
