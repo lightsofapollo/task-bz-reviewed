@@ -39,7 +39,7 @@ function task(options, callback) {
 
   function getAttachments(done) {
     bugzilla.bugAttachments(bug, function(err, result) {
-      if (err) return done();
+      if (err) return done(err);
       attachments = result;
       done();
     });
@@ -57,7 +57,7 @@ function task(options, callback) {
     op(function(err) {
       if (err) {
         // callback must only fire once.
-        callback(err);
+        callback && callback(err);
         callback = null;
         return;
       }
