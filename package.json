@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "task-bz-reviewed ================",
   "main": "index.js",
+  "bin": {
+    "bz-reviewed": "./bin/bz-reviewed"
+  },
   "scripts": {
     "test": "make"
   },
@@ -21,6 +24,7 @@
   },
   "dependencies": {
     "debug": "~0.7.2",
-    "bz": "~1.0.0-alpha"
+    "bz": "~1.0.0-alpha",
+    "commander": "~2.0.0"
   }
 }

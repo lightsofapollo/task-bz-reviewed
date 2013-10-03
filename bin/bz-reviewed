@@ -1,0 +1,36 @@
+#! /usr/bin/env node
+
+var program = require('commander');
+
+program.
+  usage('[options] <bugzilla bug #>').
+  parse(process.argv);
+
+
+var task = require('../index');
+
+if (program.args.length < 1) {
+  console.error('  a bugzilla bug number must be passed');
+  program.outputHelp();
+  process.exit(1);
+}
+
+var options = {
+  bug: parseInt(program.args[0], 10)
+};
+
+task(options, function(err, status) {
+  if (err) throw err;
+
+  if (status.success) {
+    console.log('success! bug #%s has been reviewed', options.bug);
+    return;
+  }
+
+  console.error(
+    'bug #%s has not been granted review: %s',
+    options.bug,
+    status.message
+  );
+  process.exit(1);
+});
