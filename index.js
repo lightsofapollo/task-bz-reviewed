@@ -1,5 +1,6 @@
 var validate = require('./lib/validate_bug'),
-    bz = require('bz');
+    bz = require('bz'),
+    debug = require('debug')('task-bz-reviewed:task');
 
 /**
 Check and see if a given bug has been reviewed for a github pull request.
@@ -13,6 +14,7 @@ In the case of success the callback will pass { success: true }.
 @param {Function} callback [Error, Object]
 */
 function task(options, callback) {
+  debug('request', options);
   if (!options.bug) {
     throw new Error('.bug must be given!');
   }
@@ -30,23 +32,29 @@ function task(options, callback) {
   var attachments;
 
   function getReviewers(done) {
+    debug('suggested reviewer');
     bugzilla.getSuggestedReviewers(bug, function(err, result) {
       if (err) return done(err);
+      debug('suggested reviewer done', result.length + ' of reviewers');
       reviewers = result;
       done();
     });
   }
 
   function getAttachments(done) {
+    debug('get attachments');
     bugzilla.bugAttachments(bug, function(err, result) {
       if (err) return done(err);
+      debug('get attachments done', result.length + ' of attachments');
       attachments = result;
       done();
     });
   }
 
   function complete() {
-    callback(null, validate.validateBug(reviewers, attachments));
+    var result = validate.validateBug(reviewers, attachments);
+    debug('complete', result);
+    callback(null, result);
   }
 
   var operations = [getReviewers, getAttachments],
