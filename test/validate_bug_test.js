@@ -32,6 +32,13 @@ suite('validate bug', function() {
     );
   });
 
+  test('fail - no github attachment', function() {
+    assert.deepEqual(
+      states('NO_GITHUB_ATTACHMENT'),
+      subject(reviewers, [{ description: 'xfoo' }])
+    );
+  });
+
   test('fail - no flags', function() {
     var attachments = attachmentFactory([{
       flags: []
