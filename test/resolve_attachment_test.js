@@ -5,7 +5,7 @@ suite('resolve_attachment', function() {
   var githubUrl = 'https://github.com/mozilla-b2g-bot/task-linkify/pull/1';
 
   /**
-  Going to focus mostly on the success cases as we expect the roll out of new 
+  Going to focus mostly on the success cases as we expect the roll out of new
   github content type to make this bullet proof.
   */
   var fixtures = {
