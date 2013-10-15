@@ -35,9 +35,7 @@ suite('task', function() {
     );
   }
 
-  suite('success', function() {
-    var result = { ireturned: true };
-
+  suite('network success', function() {
     setup(function() {
       // reviewers
       stubSuggestedReviewers = this.sinon.stub(
@@ -53,18 +51,39 @@ suite('task', function() {
       );
       stubBugAttachments.callsArgWithAsync(1, null, attachments);
 
-      // validator call
-      stubValidate = this.sinon.stub(validate, 'validateBug').returns(result);
     });
 
-    test('passes api requests to validator', function(done) {
-      subject({ bug: bugNumber }, function(err, givenResult) {
+    test('validateBug is successful', function(done) {
+      // validator call
+      stubValidate = this.sinon.stub(validate, 'validateBug').returns(null);
+
+      subject({ bug: bugNumber }, function(err, result) {
         // verify that the validator was given the correct arguments
         assert.calledWith(
           stubValidate, reviewers, attachments
         );
 
-        assert.equal(result, givenResult, 'returns output from validate');
+        assert(result, 'is success call');
+        done(err);
+      });
+
+      callsBugzillaApi();
+    });
+
+    test('validateBug is unsuccessful', function(done) {
+      var validateBugResponse = {};
+      // validator call
+      stubValidate =
+        this.sinon.stub(validate, 'validateBug').returns(validateBugResponse);
+
+      subject({ bug: bugNumber }, function(err, result, status) {
+        // verify that the validator was given the correct arguments
+        assert.calledWith(
+          stubValidate, reviewers, attachments
+        );
+
+        assert(!result, 'task is unsuccessful');
+        assert.strictEqual(status, validateBugResponse, 'passes status');
         done(err);
       });
 

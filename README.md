@@ -20,12 +20,12 @@ task(
       timeout: '...'
     }
   },
-  function(err, response) {
-    // response in the success case
-    // => { success: true }
+  function(err, success, detail) {
+    if (success) // yey
 
-    // error cases
-    // => { success: false, state: '..', message: '...' }
+    // if not successful detail will be populated
+    // detail => { status: 'fail_some_reason', message: 'why I failed' }
+    // see lib/states.js for all the details.
   }
 );
 ```

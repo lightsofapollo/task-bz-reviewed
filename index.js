@@ -52,9 +52,16 @@ function task(options, callback) {
   }
 
   function complete() {
-    var result = validate.validateBug(reviewers, attachments);
-    debug('complete', result);
-    callback(null, result);
+    var status = validate.validateBug(reviewers, attachments);
+    debug('complete', status);
+    callback(
+      // no error
+      null,
+      // null is success
+      (status === null) ? true : false,
+      // pass the status object
+      status
+    );
   }
 
   var operations = [getReviewers, getAttachments],

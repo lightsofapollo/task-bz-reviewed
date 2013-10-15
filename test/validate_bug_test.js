@@ -19,8 +19,8 @@ suite('validate bug', function() {
       }
     ]);
 
-    assert.deepEqual(
-      { success: true },
+    assert.equal(
+      null, // no error status success is null
       subject(reviewers, attachments)
     );
   });
@@ -111,7 +111,7 @@ suite('validate bug', function() {
     }]);
 
     assert.deepEqual(
-      { success: true },
+      null,
       subject(reviewers, attachments)
     );
   });
